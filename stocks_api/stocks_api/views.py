@@ -20,16 +20,16 @@ def query(request):
     values.append(gid)
 
     r = urllib2.urlopen('http://hq.sinajs.cn/list=%s'%gid)
-    html = r.read().decode('gb18030').encode('utf-8')
+    #html = r.read().decode('gb18030').encode('utf-8')
+    html = r.read().decode('gb18030')
     
     # process those strings
 
     values.extend(html.split('=')[1][1:-3].split(','))
-    print values[1]
-    print values
 
     data = {"result":[{"data":dict(zip(keys, values))}]}
 
+
     # return json object
-    return HttpResponse(json.dumps(data), mimetype='application/json')
+    return HttpResponse(json.dumps(data, ensure_ascii=False), mimetype='application/json')
 
