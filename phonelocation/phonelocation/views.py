@@ -16,10 +16,13 @@ def query(request):
 
     #r = urllib2.urlopen('http://hq.sinajs.cn/list=%s'%param)
     values = []
-    gid = request.GET.get('gid')
-    values.append(gid)
+    tel = request.GET.get('tel').strip()
+    # input check
 
-    r = urllib2.urlopen('http://hq.sinajs.cn/list=%s'%gid)
+
+    values.append(tel)
+
+    r = urllib2.urlopen('http://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel=%s'%tel)
     #html = r.read().decode('gb18030').encode('utf-8')
     html = r.read().decode('gb18030')
     
