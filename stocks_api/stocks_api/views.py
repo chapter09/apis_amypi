@@ -5,6 +5,7 @@ from django.http import Http404
 from django.views.generic import View
 from django.shortcuts import render_to_response
 import urllib2, json
+import re
 
 keys = ['gid', 'name', 'todayStartPri', 'yestodEndPri', 'nowPri', 'todayMax', 'todayMin', 'competitivePri', 'reservePri', 'traNumber', 'traAmount', 'buyOne', 'buyOnePri', 'buyTwo', 'buyTwoPri', 'buyThree', 'buyThreePri', 'buyFour', 'buyFourPri', 'buyFive', 'buyFivePri', 'sellOne', 'sellOnePri', 'sellTwo', 'sellTwoPri', 'sellThree', 'sellThreePri', 'sellFour', 'sellFourPri', 'sellFive', 'sellFivePri', 'date', 'time']
 
@@ -16,20 +17,24 @@ def query(request):
 
     #r = urllib2.urlopen('http://hq.sinajs.cn/list=%s'%param)
     values = []
-    gid = request.GET.get('gid')
-    values.append(gid)
+    gid = request.GET.get('gid').strip()
+    p = re.compile("^\w{2}\d{6}$")
 
-    r = urllib2.urlopen('http://hq.sinajs.cn/list=%s'%gid)
-    #html = r.read().decode('gb18030').encode('utf-8')
-    html = r.read().decode('gb18030')
-    
-    # process those strings
+    if p.match(gid):
 
-    values.extend(html.split('=')[1][1:-3].split(','))
+        values.append(gid)
+        r = urllib2.urlopen('http://hq.sinajs.cn/list=%s'%gid)
+        #html = r.read().decode('gb18030').encode('utf-8')
+        html = r.read().decode('gb18030')
+        
+        # process those strings
 
-    data = {"result":[{"data":dict(zip(keys, values))}]}
+        values.extend(html.split('=')[1][1:-3].split(','))
 
+        data = {"result":[{"data":dict(zip(keys, values))}]}
 
-    # return json object
-    return HttpResponse(json.dumps(data, ensure_ascii=False), mimetype='application/json')
+        # return json object
+        return HttpResponse(json.dumps(data, ensure_ascii=False), mimetype='application/json')
+    else:
+        return HttpResponse("Please enter a valid stock code!", mimetype='text/plain')
 
