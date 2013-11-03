@@ -22,6 +22,7 @@ def query(request):
     r = urllib2.urlopen('http://hq.sinajs.cn/list=%s'%gid)
     #html = r.read().decode('gb18030').encode('utf-8')
     html = r.read().decode('gb18030')
+    print html
     
     # process those strings
 
@@ -31,5 +32,5 @@ def query(request):
 
 
     # return json object
-    return HttpResponse(json.dumps(data, ensure_ascii=False), mimetype='application/json')
+    return HttpResponse(json.dumps(data, encoding="UTF-8", ensure_ascii=False), mimetype='application/json')
 
