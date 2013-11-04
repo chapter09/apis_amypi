@@ -19,7 +19,8 @@ def query(request):
     values = []
     gid = request.GET.get('gid').strip()
     p = re.compile("^\w{2}\d{6}$")
-
+    
+    # process those strings
     if p.match(gid):
 
         values.append(gid)
