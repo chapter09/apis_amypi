@@ -26,7 +26,7 @@ def search(request):
     data = json.loads(html)
 
     #    if data['queryresult'] == "True":
-    return HttpResponse(json.dumps(data, encoding="uft-8", ensure_ascii=False), mimetype='application/json')
+    return HttpResponse(json.dumps(data, encoding="utf-8", ensure_ascii=False), mimetype='application/json')
     #    else:
     #        return HttpResponse("The phone number does not exist.", mimetype='text/plain')
     #else:
@@ -45,4 +45,4 @@ def id(request):
     data = json.loads(html)
 
     #    if data['queryresult'] == "True":
-    return HttpResponse(json.dumps(data, encoding="uft-8", ensure_ascii=False), mimetype='application/json')
+    return HttpResponse(json.dumps(data, encoding="utf-8", ensure_ascii=False), mimetype='application/json')
